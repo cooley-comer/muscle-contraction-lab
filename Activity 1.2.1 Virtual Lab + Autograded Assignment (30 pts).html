@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Activity 1.2.1 Autograded Assignment</title>
+<style>
+:root{
+  --bg:#F3F5F9; --card:#FFFFFF; --fg:#1A1A1A; --muted:#4A5873; --navy:#0B1F3F; --brick:#9B2915; --coral:#EE7B66;
+  --line:#D5DAE3; --ok:#12704A; --okbg:#E6F4F1; --bad:#9B2915; --badbg:#FDECE8; --input:#FFFFFF; --btn:#0B1F3F; --btnfg:#FFFFFF;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1524; --card:#18223A; --fg:#EEF2FA; --muted:#AEBBD6; --navy:#CADCFC; --brick:#FF9C87; --coral:#EE7B66;
+    --line:#32405F; --ok:#7FE0B5; --okbg:#133A30; --bad:#FFB3A3; --badbg:#3E1D18; --input:#0E1524; --btn:#CADCFC; --btnfg:#0B1F3F;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1524; --card:#18223A; --fg:#EEF2FA; --muted:#AEBBD6; --navy:#CADCFC; --brick:#FF9C87; --coral:#EE7B66;
+  --line:#32405F; --ok:#7FE0B5; --okbg:#133A30; --bad:#FFB3A3; --badbg:#3E1D18; --input:#0E1524; --btn:#CADCFC; --btnfg:#0B1F3F;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--fg); font-family:'Calibri','Carlito','Segoe UI',system-ui,sans-serif; font-size:17px; line-height:1.45}
+.wrap{max-width:860px; margin:0 auto; padding:16px}
+h1,h2,h3{font-family:'Cambria','Georgia',serif; color:var(--navy); line-height:1.15; margin:0 0 8px}
+h1{font-size:27px} h2{font-size:22px}
+header{background:var(--navy); color:var(--bg); border-radius:14px; padding:16px 18px; display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap}
+header h1{color:var(--bg); margin:0} header p{margin:4px 0 0; opacity:.92}
+.lang{display:flex; gap:6px; align-items:flex-start}
+.lang button{background:transparent; color:var(--bg); border:2px solid var(--bg); border-radius:8px; padding:6px 12px; font-weight:700; cursor:pointer; font-size:15px}
+.lang button[aria-pressed="true"]{background:var(--bg); color:var(--navy)}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-top:14px}
+.row{display:flex; gap:12px; flex-wrap:wrap} .row>*{flex:1 1 220px}
+label{font-weight:700; display:block; margin-bottom:4px}
+input[type=text],input[type=number],select{width:100%; padding:9px 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--input); color:var(--fg); font:inherit}
+select{max-width:100%}
+.btn{background:var(--btn); color:var(--btnfg); border:0; border-radius:10px; padding:12px 20px; font:inherit; font-weight:700; cursor:pointer}
+.btn.alt{background:transparent; color:var(--navy); border:2px solid var(--navy)}
+.btn:disabled{opacity:.5; cursor:not-allowed}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.lang button:focus-visible{outline:3px solid var(--coral); outline-offset:2px}
+.pill{display:inline-block; background:var(--brick); color:var(--bg); font-weight:800; font-size:13px; border-radius:6px; padding:1px 8px; margin-left:6px; vertical-align:middle}
+.q{padding-top:12px; margin-top:12px; border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0; margin-top:4px}
+fieldset{border:0; margin:0; padding:0} legend{font-weight:700; padding:0; margin-bottom:6px}
+.opt{display:flex; gap:8px; align-items:flex-start; padding:4px 0}
+.opt input{margin-top:6px; width:18px; height:18px; accent-color:var(--brick)}
+.opt label{font-weight:500; margin:0}
+table{width:100%; border-collapse:collapse; font-size:16px; margin:6px 0}
+th{background:var(--navy); color:var(--bg); text-align:left; padding:6px 8px} td{padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:middle}
+.subrow{display:grid; grid-template-columns:minmax(120px,1fr) minmax(160px,2fr); gap:8px; align-items:center; padding:5px 0}
+@media (max-width:560px){ .subrow{grid-template-columns:1fr} }
+.fb{display:block; font-size:15px; font-weight:700; margin-top:3px}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+.banner{border-radius:14px; padding:16px; margin-top:14px; font-size:20px; font-weight:800; text-align:center}
+.banner.ok{background:var(--okbg); color:var(--ok)} .banner.mid{background:var(--badbg); color:var(--bad)}
+.small{font-size:14.5px; color:var(--muted)}
+.note{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:8px 0}
+.bar{position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; display:flex; justify-content:space-between; align-items:center; font-weight:800; color:var(--navy)}
+.q.ok-q{border-left:5px solid var(--ok); padding-left:10px} .q.bad-q{border-left:5px solid var(--bad); padding-left:10px}
+@media print{ .lang,.noprint,.bar{display:none!important} body{background:#fff} }
+
+:root{ --warn:#8A5A00; --warnbg:#FFF4D6; --muscle:#C0392B; --thin:#1B8A99; --thick:#9B2915; --bone:#D9D9D9; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --warn:#FFD479; --warnbg:#3A3015; --muscle:#E4705C; --thin:#5BC7D6; --thick:#FF9C87; --bone:#4A5873; } }
+:root[data-theme="dark"]{ --warn:#FFD479; --warnbg:#3A3015; --muscle:#E4705C; --thin:#5BC7D6; --thick:#FF9C87; --bone:#4A5873; }
+input[type=range]{width:100%; accent-color:var(--brick)}
+.tabs,.mtabs{display:flex; gap:6px; flex-wrap:wrap; margin-top:14px}
+.tabs button,.mtabs button{flex:1 1 140px; background:var(--card); color:var(--navy); border:2px solid var(--line); border-radius:10px; padding:10px; font:inherit; font-weight:700; cursor:pointer}
+.tabs button[aria-selected="true"],.mtabs button[aria-selected="true"]{background:var(--navy); color:var(--bg); border-color:var(--navy)}
+.mtabs button{font-size:18px}
+.panel[hidden],.view[hidden]{display:none}
+.stat{display:inline-block; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:4px 10px; margin:4px 6px 0 0; font-weight:700}
+.msg{border-radius:10px; padding:10px 12px; margin-top:10px; font-weight:600}
+.msg.ok{background:var(--okbg); color:var(--ok)} .msg.warn{background:var(--warnbg); color:var(--warn)} .msg.bad{background:var(--badbg); color:var(--bad)}
+svg{width:100%; height:auto; display:block; background:var(--bg); border-radius:10px; border:1px solid var(--line)}
+svg text{fill:var(--fg); font-family:inherit}
+.toggle{display:flex; gap:8px; align-items:center; margin:6px 0}
+.toggle input{width:20px; height:20px; accent-color:var(--brick)}
+.toggle label{margin:0}
+.golab{margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1 data-i18n="title">Activity 1.2.1 Causes of Contraction: Lab + Assignment</h1>
+    <p data-i18n="sub">PLTW Human Body Systems • Play with the virtual model, then take the 30-point autograded assignment</p>
+  </div>
+  <div class="lang" role="group" aria-label="Language">
+    <button id="bEn" aria-pressed="true">English</button><button id="bEs" aria-pressed="false">Español</button>
+  </div>
+</header>
+<div class="mtabs" role="tablist" aria-label="Sections">
+  <button role="tab" id="mtAsg" aria-selected="true" aria-controls="viewAsg" data-i18n="mtAsg">Assignment (30 pts)</button>
+  <button role="tab" id="mtLab" aria-selected="false" aria-controls="viewLab" data-i18n="mtLab">Virtual Lab (practice)</button>
+</div>
+<div class="view" id="viewAsg" role="tabpanel">
+<section class="card">
+  <div class="row">
+    <div><label for="nm" data-i18n="nameL">Your name</label><input id="nm" type="text" autocomplete="name"></div>
+    <div><label for="pd" data-i18n="periodL">Class period</label><input id="pd" type="text" autocomplete="off"></div>
+  </div>
+  <p class="small" data-i18n="intro">Answer every question, then press Submit at the bottom. Your numbers in Section C are different from your classmates’. Section G uses the Virtual Lab tab. Each question is worth 1 point.</p>
+</section>
+
+<div class="bar" aria-live="polite"><span id="prog"></span><span id="scoreTop"></span></div>
+<div id="form"></div>
+
+<section class="card noprint" id="actions">
+  <button class="btn" id="submit" data-i18n="submit">Submit for grading</button>
+  <button class="btn alt" id="retake" style="display:none" data-i18n="retake">Try again with new numbers</button>
+  <button class="btn alt" id="print" style="display:none" data-i18n="print">Print / save as PDF</button>
+  <button class="btn alt" id="copy" style="display:none" data-i18n="copy">Copy score report</button>
+  <div id="status" class="note" style="display:none" aria-live="polite"></div>
+  <textarea id="report" readonly style="display:none; width:100%; min-height:130px; margin-top:8px; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--input); color:var(--fg); font:inherit" aria-label="Score report"></textarea>
+</section>
+
+<section class="card" id="teacher" style="display:none">
+  <h2 data-i18n="tH">Teacher gradebook</h2>
+  <p class="small" data-i18n="tP">Only you see this. Scores appear here when students submit while signed in with access that lets them save.</p>
+  <div id="tTable"></div>
+  <button class="btn alt" id="tCsv" data-i18n="tCsv">Copy as CSV</button>
+  <textarea id="tOut" readonly style="display:none; width:100%; min-height:120px; margin-top:8px; padding:8px; border:1.5px solid var(--line); border-radius:8px; background:var(--input); color:var(--fg); font:inherit" aria-label="CSV"></textarea>
+</section>
+<p class="small" style="text-align:center; margin:16px 0 28px" data-i18n="foot">Simplified models for learning. Real muscles are more complex.</p>
+</div>
+<div class="view" id="viewLab" role="tabpanel" hidden>
+<section class="card"><h2 data-i18n="labIntroH">Virtual Lab: play and explore</h2><p data-i18n="labIntro">Use these models to see how muscles contract. Section G of the assignment asks you for numbers from Part A and Part C, so run them before you answer. Practice is not graded.</p></section>
+<div class="tabs" role="tablist" aria-label="Lab parts">
+  <button role="tab" id="tabA" aria-selected="true" aria-controls="pA" data-li="tabA">Part A: Sarcomere</button>
+  <button role="tab" id="tabB" aria-selected="false" aria-controls="pB" data-li="tabB">Part B: Arm model</button>
+  <button role="tab" id="tabC" aria-selected="false" aria-controls="pC" data-li="tabC">Part C: Stimulus test</button>
+</div>
+
+<!-- PART A -->
+<section class="card panel" id="pA" role="tabpanel" aria-labelledby="tabA">
+  <h2 data-li="aH">Part A: Inside a sarcomere</h2>
+  <p data-li="aP">A sarcomere is the contracting unit of a muscle. Thin filaments (actin) slide past thick filaments (myosin). Change the conditions and watch what happens.</p>
+  <svg id="sarc" viewBox="0 0 600 220" role="img" aria-label="Sarcomere diagram"></svg>
+  <div class="row" style="margin-top:10px">
+    <div>
+      <div class="toggle"><input type="checkbox" id="ca"><label for="ca" data-li="caL">Nerve signal sent: calcium (Ca²⁺) released</label></div>
+      <label for="atp"><span data-li="atpL">ATP available</span>: <span id="atpV">100</span>%</label>
+      <input type="range" id="atp" min="0" max="100" value="100">
+    </div>
+    <div>
+      <span class="stat"><span data-li="lenL">Sarcomere length</span>: <span id="slen">2.20</span> µm</span>
+      <span class="stat"><span data-li="shortL">Shortened</span>: <span id="sshort">0</span>%</span>
+      <div id="amsg" class="msg warn" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="noprint" style="margin-top:10px"><button class="btn alt" id="aReset" data-li="reset">Reset</button></div>
+  <p class="small" data-li="aTry"><b>Try this:</b> (1) Turn calcium on and watch. (2) Turn calcium off. (3) Turn calcium on, wait until it shortens, then drag ATP to 0%, then turn calcium off.</p>
+</section>
+
+<!-- PART B -->
+<section class="card panel" id="pB" role="tabpanel" aria-labelledby="tabB" hidden>
+  <h2 data-li="bH">Part B: Biceps and triceps</h2>
+  <p data-li="bP">Muscles only pull, and they work in pairs. Set how hard each muscle contracts and see how the forearm moves. The <b>origin</b> stays put; the <b>insertion</b> moves.</p>
+  <svg id="arm" viewBox="110 5 420 320" role="img" aria-label="Arm model with biceps and triceps"></svg>
+  <div class="row" style="margin-top:10px">
+    <div><label for="bi"><span data-li="biL">Biceps activation</span>: <span id="biV">0</span>%</label><input type="range" id="bi" min="0" max="100" value="0"></div>
+    <div><label for="tri"><span data-li="triL">Triceps activation</span>: <span id="triV">0</span>%</label><input type="range" id="tri" min="0" max="100" value="0"></div>
+    <div><label for="load" data-li="loadL">Weight in hand</label>
+      <select id="load"><option value="0">0 kg</option><option value="1">1 kg</option><option value="3">3 kg</option><option value="6">6 kg</option></select></div>
+  </div>
+  <div id="bStats" style="margin-top:6px"></div>
+  <div id="bmsg" class="msg warn" aria-live="polite"></div>
+  <div class="noprint" style="margin-top:10px"><button class="btn" id="bLog" data-li="logRow">Record this setting</button> <button class="btn alt" id="bReset" data-li="reset">Reset</button></div>
+  <table aria-label="Arm data"><thead><tr><th data-li="thBi">Biceps %</th><th data-li="thTri">Triceps %</th><th data-li="thLoad">Weight</th><th data-li="thAng">Elbow angle</th><th data-li="thRes">Result</th></tr></thead><tbody id="bRows"></tbody></table>
+</section>
+
+<!-- PART C -->
+<section class="card panel" id="pC" role="tabpanel" aria-labelledby="tabC" hidden>
+  <h2 data-li="cH">Part C: Stimulus frequency and fatigue</h2>
+  <p data-li="cP">A nerve can stimulate a muscle many times per second. Pick a frequency, press <b>Stimulate</b>, and watch the force produced over 8 seconds. Run at least three different frequencies.</p>
+  <svg id="plot" viewBox="0 0 600 260" role="img" aria-label="Muscle force over time graph"></svg>
+  <div class="row" style="margin-top:10px">
+    <div><label for="freq"><span data-li="freqL">Stimulus frequency</span>: <span id="freqV">10</span> Hz</label><input type="range" id="freq" min="1" max="60" value="10"></div>
+    <div><label for="rest" data-li="restL">Rest before test</label>
+      <select id="rest"><option value="full" data-li="restFull">Fully rested</option><option value="none" data-li="restNone">No rest (still tired from last run)</option></select></div>
+  </div>
+  <div class="noprint" style="margin-top:10px"><button class="btn" id="go" data-li="go">Stimulate</button> <button class="btn alt" id="cClear" data-li="clear">Clear table</button></div>
+  <div id="cmsg" class="msg warn" aria-live="polite" data-li="cWait">Press Stimulate to start.</div>
+  <table aria-label="Stimulus data"><thead><tr><th data-li="thF">Frequency (Hz)</th><th data-li="thPk">Peak force</th><th data-li="thEnd">Force at 8 s</th><th data-li="thTy">Pattern</th></tr></thead><tbody id="cRows"></tbody></table>
+</section>
+
+
+</div>
+</div>
+<script>
+(function(){
+'use strict';
+var I={
+en:{title:'Virtual Muscle Contraction Lab',subtitle:'PLTW Human Body Systems • Test how muscles contract, move bones, and get tired.',startH:'Start here',nameL:'Your name',periodL:'Class period',
+intro:'Work through the three tests, record your data, then answer the questions at the end. You can switch language at any time.',
+tabA:'Part A: Sarcomere',tabB:'Part B: Arm model',tabC:'Part C: Stimulus test',tabQ:'Questions',
+aH:'Part A: Inside a sarcomere',aP:'A sarcomere is the contracting unit of a muscle. Thin filaments (actin) slide past thick filaments (myosin). Change the conditions and watch what happens.',
+caL:'Nerve signal sent: calcium (Ca²⁺) released',atpL:'ATP available',lenL:'Sarcomere length',shortL:'Shortened',reset:'Reset',
+aTry:'<b>Try this:</b> (1) Turn calcium on and watch. (2) Turn calcium off. (3) Turn calcium on, wait until it shortens, then drag ATP to 0%, then turn calcium off.',
+a_relaxed:'Relaxed. Without calcium, the binding sites on actin stay covered, so myosin heads cannot attach.',
+a_contract:'Contracting. Calcium uncovers the binding sites. Myosin heads attach, pull, and release using ATP.',
+a_full:'Fully contracted. The thin filaments have slid as far as they can.',
+a_noatp_c:'Stuck contracted. Myosin heads cannot let go of actin without ATP, so the sarcomere cannot relax (this is how rigor mortis and cramps get stuck).',
+a_noatp_r:'Calcium is on but there is no ATP. Myosin heads cannot complete the pulling cycle, so nothing moves.',
+a_relax:'Relaxing. Calcium is gone and ATP lets the heads release, so the filaments slide back.',
+bH:'Part B: Biceps and triceps',bP:'Muscles only pull, and they work in pairs. Set how hard each muscle contracts and see how the forearm moves. The <b>origin</b> stays put; the <b>insertion</b> moves.',
+biL:'Biceps activation',triL:'Triceps activation',loadL:'Weight in hand',logRow:'Record this setting',thBi:'Biceps %',thTri:'Triceps %',thLoad:'Weight',thAng:'Elbow angle',thRes:'Result',
+b_angle:'Elbow angle',b_bilen:'Biceps length',b_trilen:'Triceps length',b_rest:'of resting length',
+b_flex:'Flexion: the biceps (flexor) is stronger, so the angle gets smaller.',b_ext:'Extension: the triceps (extensor) is stronger, so the angle gets larger.',
+b_bal:'Balanced: the two muscles pull equally, so the arm holds still.',b_co:'Co-contraction: both muscles are working hard. The joint is stiff and energy is wasted.',
+b_heavy:'The weight is too heavy for this biceps setting. The forearm is pulled down.',b_none:'Both muscles are relaxed. The arm hangs with the elbow nearly straight.',
+res_flex:'Flexed',res_ext:'Extended',res_hold:'Held',res_co:'Stiff',res_drop:'Dropped',
+O:'Origin (humerus/scapula)',INS:'Insertion (radius)',OT:'Origin (scapula/humerus)',INT:'Insertion (ulna)',Bic:'Biceps',Tri:'Triceps',Elbow:'Elbow joint',
+cH:'Part C: Stimulus frequency and fatigue',cP:'A nerve can stimulate a muscle many times per second. Pick a frequency, press <b>Stimulate</b>, and watch the force produced over 8 seconds. Run at least three different frequencies.',
+freqL:'Stimulus frequency',restL:'Rest before test',restFull:'Fully rested',restNone:'No rest (still tired from last run)',go:'Stimulate',clear:'Clear table',cWait:'Press Stimulate to start.',
+thF:'Frequency (Hz)',thPk:'Peak force',thEnd:'Force at 8 s',thTy:'Pattern',
+p_twitch:'Separate twitches',p_summ:'Summation (twitches blend)',p_tet:'Tetanus (smooth, sustained)',p_fat:'Tetanus, then fatigue',
+c_done:'Done. Pattern',c_axis:'Force (% of maximum)',c_t:'Time (s)',
+qH:'Questions',copy:'Copy my results',print:'Print / save as PDF',copied:'Copied! Paste it into your assignment.',manual:'Select the text below and copy it.',
+foot:'Simplified models for learning. Real muscles are more complex.',
+correct:'Correct.',wrong:'Not quite. Look at the correct answer and review your data.',
+sName:'Name',sPeriod:'Period',sMC:'Multiple choice',sSA:'Short answers',sDataB:'Part B data',sDataC:'Part C data',score:'Score'},
+es:{title:'Laboratorio virtual de contracción muscular',subtitle:'PLTW Sistemas del Cuerpo Humano • Prueba cómo se contraen los músculos, mueven los huesos y se cansan.',startH:'Empieza aquí',nameL:'Tu nombre',periodL:'Período de clase',
+intro:'Completa las tres pruebas, anota tus datos y luego responde las preguntas del final. Puedes cambiar de idioma en cualquier momento.',
+tabA:'Parte A: Sarcómero',tabB:'Parte B: Modelo del brazo',tabC:'Parte C: Prueba de estímulo',tabQ:'Preguntas',
+aH:'Parte A: Dentro de un sarcómero',aP:'Un sarcómero es la unidad contráctil de un músculo. Los filamentos delgados (actina) se deslizan entre los filamentos gruesos (miosina). Cambia las condiciones y observa qué pasa.',
+caL:'Señal nerviosa enviada: se libera calcio (Ca²⁺)',atpL:'ATP disponible',lenL:'Longitud del sarcómero',shortL:'Acortamiento',reset:'Reiniciar',
+aTry:'<b>Prueba esto:</b> (1) Activa el calcio y observa. (2) Desactiva el calcio. (3) Activa el calcio, espera a que se acorte, baja el ATP a 0% y luego desactiva el calcio.',
+a_relaxed:'Relajado. Sin calcio, los sitios de unión de la actina siguen cubiertos, así que las cabezas de miosina no pueden unirse.',
+a_contract:'Contrayéndose. El calcio descubre los sitios de unión. Las cabezas de miosina se unen, jalan y se sueltan usando ATP.',
+a_full:'Totalmente contraído. Los filamentos delgados se han deslizado lo más posible.',
+a_noatp_c:'Atascado contraído. Sin ATP, las cabezas de miosina no pueden soltar la actina, así que el sarcómero no puede relajarse (así se atascan el rigor mortis y los calambres).',
+a_noatp_r:'Hay calcio pero no hay ATP. Las cabezas de miosina no pueden completar el ciclo de jalar, así que nada se mueve.',
+a_relax:'Relajándose. El calcio ya no está y el ATP permite que las cabezas se suelten, así que los filamentos regresan.',
+bH:'Parte B: Bíceps y tríceps',bP:'Los músculos solo jalan y trabajan en pares. Ajusta qué tan fuerte se contrae cada músculo y observa cómo se mueve el antebrazo. El <b>origen</b> se queda quieto; la <b>inserción</b> se mueve.',
+biL:'Activación del bíceps',triL:'Activación del tríceps',loadL:'Peso en la mano',logRow:'Anotar esta configuración',thBi:'Bíceps %',thTri:'Tríceps %',thLoad:'Peso',thAng:'Ángulo del codo',thRes:'Resultado',
+b_angle:'Ángulo del codo',b_bilen:'Longitud del bíceps',b_trilen:'Longitud del tríceps',b_rest:'de su longitud en reposo',
+b_flex:'Flexión: el bíceps (flexor) es más fuerte, así que el ángulo se hace más pequeño.',b_ext:'Extensión: el tríceps (extensor) es más fuerte, así que el ángulo se hace más grande.',
+b_bal:'Equilibrio: los dos músculos jalan igual, así que el brazo se queda quieto.',b_co:'Co-contracción: ambos músculos trabajan fuerte. La articulación se pone rígida y se gasta energía.',
+b_heavy:'El peso es demasiado para esta configuración del bíceps. El antebrazo es jalado hacia abajo.',b_none:'Ambos músculos están relajados. El brazo cuelga con el codo casi recto.',
+res_flex:'Flexionado',res_ext:'Extendido',res_hold:'Sostenido',res_co:'Rígido',res_drop:'Cayó',
+O:'Origen (húmero/escápula)',INS:'Inserción (radio)',OT:'Origen (escápula/húmero)',INT:'Inserción (cúbito)',Bic:'Bíceps',Tri:'Tríceps',Elbow:'Articulación del codo',
+cH:'Parte C: Frecuencia de estímulo y fatiga',cP:'Un nervio puede estimular un músculo muchas veces por segundo. Elige una frecuencia, presiona <b>Estimular</b> y observa la fuerza producida durante 8 segundos. Prueba al menos tres frecuencias diferentes.',
+freqL:'Frecuencia de estímulo',restL:'Descanso antes de la prueba',restFull:'Completamente descansado',restNone:'Sin descanso (aún cansado de la última prueba)',go:'Estimular',clear:'Borrar tabla',cWait:'Presiona Estimular para empezar.',
+thF:'Frecuencia (Hz)',thPk:'Fuerza máxima',thEnd:'Fuerza a los 8 s',thTy:'Patrón',
+p_twitch:'Sacudidas separadas',p_summ:'Sumación (las sacudidas se juntan)',p_tet:'Tétanos (suave y sostenido)',p_fat:'Tétanos y luego fatiga',
+c_done:'Listo. Patrón',c_axis:'Fuerza (% del máximo)',c_t:'Tiempo (s)',
+qH:'Preguntas',copy:'Copiar mis resultados',print:'Imprimir / guardar como PDF',copied:'¡Copiado! Pégalo en tu tarea.',manual:'Selecciona el texto de abajo y cópialo.',
+foot:'Modelos simplificados para aprender. Los músculos reales son más complejos.',
+correct:'Correcto.',wrong:'No exactamente. Mira la respuesta correcta y repasa tus datos.',
+sName:'Nombre',sPeriod:'Período',sMC:'Opción múltiple',sSA:'Respuestas cortas',sDataB:'Datos de la Parte B',sDataC:'Datos de la Parte C',score:'Puntaje'}
+};
+var lang='en';
+function t(k){return (I[lang][k]!==undefined)?I[lang][k]:I.en[k]||k;}
+function $(id){return document.getElementById(id);}
+function applyLang(){
+  [].forEach.call(document.querySelectorAll('[data-li]'),function(e){e.innerHTML=t(e.getAttribute('data-li'));});
+  drawArm(); drawSarc(); updateA(true); drawPlot(lastTrace); refreshRows();
+}
+
+
+/* tabs */
+var tabs=['A','B','C'];
+tabs.forEach(function(k){ $('tab'+k).onclick=function(){ tabs.forEach(function(j){ $('tab'+j).setAttribute('aria-selected',j===k); $('p'+j).hidden=(j!==k); }); }; });
+
+/* ---------- PART A ---------- */
+var pos=0, timer=null, svgNS='http://www.w3.org/2000/svg';
+function el(n,a,p){var e=document.createElementNS(svgNS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function drawSarc(){
+  var s=$('sarc'); s.innerHTML='';
+  var len=2.2-0.6*pos, L=len*150, cx=300, zl=cx-L/2, zr=cx+L/2;
+  el('rect',{x:zl,y:40,width:L,height:140,fill:'none',stroke:'var(--line)','stroke-dasharray':'4 4'},s);
+  var thickLen=240, ty=[78,110,142];
+  ty.forEach(function(y,i){
+    el('rect',{x:cx-thickLen/2,y:y-5,width:thickLen,height:10,rx:5,fill:'var(--thick)'},s);
+    for(var h=0;h<9;h++){ var hx=cx-thickLen/2+14+h*26; var up=(h%2===0);
+      var ext=(pos>0.05 && pos<0.98)? 7:3;
+      el('line',{x1:hx,y1:y+(up?-5:5),x2:hx+ (pos>0.05?5:0),y2:y+(up?-5-ext:5+ext),stroke:'var(--thick)','stroke-width':3,'stroke-linecap':'round'},s);}
+  });
+  var ay=[62,94,126,158];
+  ay.forEach(function(y){
+    el('line',{x1:zl,y1:y,x2:zl+150,y2:y,stroke:'var(--thin)','stroke-width':4,'stroke-linecap':'round'},s);
+    el('line',{x1:zr,y1:y,x2:zr-150,y2:y,stroke:'var(--thin)','stroke-width':4,'stroke-linecap':'round'},s);
+  });
+  el('rect',{x:zl-4,y:40,width:8,height:140,fill:'var(--fg)'},s); el('rect',{x:zr-4,y:40,width:8,height:140,fill:'var(--fg)'},s);
+  txt(s,zl,32,'Z',true); txt(s,zr,32,'Z',true);
+  txt(s,cx,204,(lang==='es'?'Miosina (grueso)':'Myosin (thick)'),true,'var(--thick)');
+  txt(s,zl+75,204,(lang==='es'?'Actina (delgado)':'Actin (thin)'),true,'var(--thin)');
+  // bar of length
+  el('line',{x1:zl,y1:20,x2:zr,y2:20,stroke:'var(--muted)','stroke-width':2},s);
+  txt(s,cx,16,len.toFixed(2)+' µm',true);
+}
+function txt(p,x,y,c,bold,fill){var e=el('text',{x:x,y:y,'text-anchor':c?'middle':'start','font-size':14,'font-weight':bold?700:400},p); if(fill)e.setAttribute('style','fill:'+fill); e.textContent=arguments[3]&&typeof arguments[3]==='string'?arguments[3]:''; return e;}
+// fix txt signature usage
+txt=function(p,x,y,str,mid,fill){var e=el('text',{x:x,y:y,'text-anchor':mid?'middle':'start','font-size':14,'font-weight':700},p); if(fill)e.setAttribute('style','fill:'+fill); e.textContent=str; return e;};
+function updateA(redrawOnly){
+  var ca=$('ca').checked, atp=+$('atp').value; $('atpV').textContent=atp;
+  var len=2.2-0.6*pos; $('slen').textContent=len.toFixed(2); $('sshort').textContent=Math.round(pos*100/ (0.6/2.2)*(0.6/2.2));
+  $('sshort').textContent=Math.round((2.2-len)/2.2*100);
+  var m=$('amsg'), cls='warn', k;
+  if(atp===0){ if(pos>0.05){k='a_noatp_c';cls='bad';} else if(ca){k='a_noatp_r';cls='bad';} else {k='a_relaxed';} }
+  else if(ca){ if(pos>=0.99){k='a_full';cls='ok';} else {k='a_contract';cls='ok';} }
+  else { if(pos>0.01){k='a_relax';} else {k='a_relaxed';} }
+  m.className='msg '+cls; m.textContent=t(k);
+  drawSarc();
+}
+function tickA(){
+  var ca=$('ca').checked, atp=+$('atp').value, rate=0.025*(Math.max(atp,0)/100);
+  if(atp>0){ if(ca) pos=Math.min(1,pos+Math.max(rate,0.004)); else pos=Math.max(0,pos-Math.max(rate,0.004)*1.2); }
+  updateA();
+}
+$('ca').onchange=function(){updateA();}; $('atp').oninput=function(){updateA();};
+$('aReset').onclick=function(){pos=0;$('ca').checked=false;$('atp').value=100;updateA();};
+setInterval(tickA,40);
+
+/* ---------- PART B ---------- */
+var bData=[], bLast={};
+function drawArm(){
+  var s=$('arm'); s.innerHTML='';
+  var bi=+$('bi').value, tr=+$('tri').value, load=+$('load').value;
+  // effective drive
+  var effB=bi/100, effT=tr/100;
+  var loadTorque=load/6*0.55; // fraction needed
+  var net=effB*1.0-effT*1.0-loadTorque*(1-effT*0.0);
+  var angle=165-Math.max(-0.12,Math.min(1,net))*125; // 165 straight to ~40
+  angle=Math.max(35,Math.min(170,angle));
+  var phi=(180-angle)*Math.PI/180;
+  var S={x:200,y:30}, E={x:200,y:170}, dir={x:Math.sin(phi),y:Math.cos(phi)}, perp={x:Math.cos(phi),y:-Math.sin(phi)};
+  var W={x:E.x+dir.x*130,y:E.y+dir.y*130};
+  // bones
+  el('line',{x1:S.x,y1:S.y,x2:E.x,y2:E.y,stroke:'var(--bone)','stroke-width':26,'stroke-linecap':'round'},s);
+  el('line',{x1:E.x,y1:E.y,x2:W.x,y2:W.y,stroke:'var(--bone)','stroke-width':22,'stroke-linecap':'round'},s);
+  // muscles
+  var bo={x:S.x+14,y:S.y+34}, bin={x:E.x+dir.x*26+perp.x*13,y:E.y+dir.y*26+perp.y*13};
+  var to={x:S.x-14,y:S.y+34}, tin={x:E.x-perp.x*13-dir.x*4,y:E.y-perp.y*13-dir.y*4};
+  var bl=Math.hypot(bin.x-bo.x,bin.y-bo.y), tl=Math.hypot(tin.x-to.x,tin.y-to.y);
+  var bl0=Math.hypot((E.x+Math.sin(0)*26+13)-(S.x+14),(E.y+26)-(S.y+34)); // straight arm
+  var tl0=Math.hypot((E.x-13)-(S.x-14),(E.y-4)-(S.y+34));
+  var bflex=Math.hypot((E.x+Math.sin(Math.PI*0.7)*26+Math.cos(Math.PI*0.7)*13)-(S.x+14),(E.y+Math.cos(Math.PI*0.7)*26-Math.sin(Math.PI*0.7)*13)-(S.y+34));
+  function mus(a,b,act,col,w){ var wd=8+act*16; var p=el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:col,'stroke-width':wd,'stroke-linecap':'round',opacity:0.45+act*0.55},s); return p; }
+  mus(bo,bin,effB,'var(--muscle)'); mus(to,tin,effT,'var(--thin)');
+  [bo,to].forEach(function(p){el('circle',{cx:p.x,cy:p.y,r:6,fill:'var(--navy)'},s);});
+  [bin,tin].forEach(function(p){el('circle',{cx:p.x,cy:p.y,r:6,fill:'var(--brick)'},s);});
+  el('circle',{cx:E.x,cy:E.y,r:11,fill:'var(--card)',stroke:'var(--fg)','stroke-width':3},s);
+  // weight
+  if(load>0){ var r=8+load*1.6; el('circle',{cx:W.x+dir.x*8,cy:W.y+dir.y*8+r*0.4,r:r,fill:'var(--fg)',opacity:0.75},s); txt(s,W.x+dir.x*8,W.y+dir.y*8+r*0.4+4,load+'kg',true).setAttribute('style','fill:var(--bg);font-size:12px'); }
+  // labels (right side)
+  function lab(x,y,str,col){ var e=txt(s,x,y,str,false); e.setAttribute('style','fill:'+col); }
+  lab(300,60,'● '+t('O'),'var(--navy)'); lab(300,84,'● '+t('INS'),'var(--brick)');
+  lab(300,118,'■ '+t('Bic'),'var(--muscle)'); lab(300,142,'■ '+t('Tri'),'var(--thin)'); lab(300,176,'○ '+t('Elbow'),'var(--fg)');
+  var angTxt=Math.round(angle)+'°'; txt(s,E.x+22,E.y+4,angTxt,false).setAttribute('style','fill:var(--fg);font-size:18px');
+  // stats
+  var bPct=Math.round(bl/bl0*100), tPct=Math.round(tl/tl0*100);
+  $('bStats').innerHTML='<span class="stat">'+t('b_angle')+': '+Math.round(angle)+'°</span><span class="stat">'+t('b_bilen')+': '+bPct+'% '+t('b_rest')+'</span><span class="stat">'+t('b_trilen')+': '+tPct+'% '+t('b_rest')+'</span>';
+  var key, cls='warn', res;
+  if(bi<5&&tr<5){key=load>0?'b_heavy':'b_none';cls=load>0?'bad':'warn';res=load>0?'res_drop':'res_hold';}
+  else if(bi>60&&tr>60){key='b_co';cls='warn';res='res_co';}
+  else if(Math.abs(net)<0.06){key='b_bal';cls='ok';res='res_hold';}
+  else if(net>0){key='b_flex';cls='ok';res='res_flex';}
+  else {key=(load>0&&effT<0.3)?'b_heavy':'b_ext';cls=(key==='b_heavy')?'bad':'ok';res=(key==='b_heavy')?'res_drop':'res_ext';}
+  var m=$('bmsg'); m.className='msg '+cls; m.textContent=t(key);
+  bLast={bi:bi,tr:tr,load:load,angle:Math.round(angle),res:res};
+}
+function refreshRows(){
+  var tb=$('bRows'); tb.innerHTML='';
+  bData.forEach(function(r){ var tr=document.createElement('tr'); tr.innerHTML='<td>'+r.bi+'</td><td>'+r.tr+'</td><td>'+r.load+' kg</td><td>'+r.angle+'°</td><td>'+t(r.res)+'</td>'; tb.appendChild(tr); });
+  var tc=$('cRows'); tc.innerHTML='';
+  cData.forEach(function(r){ var tr=document.createElement('tr'); tr.innerHTML='<td>'+r.f+'</td><td>'+r.pk+'%</td><td>'+r.end+'%</td><td>'+t(r.pat)+'</td>'; tc.appendChild(tr); });
+}
+['bi','tri','load'].forEach(function(id){ $(id).oninput=function(){ $('biV').textContent=$('bi').value; $('triV').textContent=$('tri').value; drawArm(); }; $(id).onchange=$(id).oninput; });
+$('bLog').onclick=function(){ bData.push({bi:bLast.bi,tr:bLast.tr,load:bLast.load,angle:bLast.angle,res:bLast.res}); refreshRows(); };
+$('bReset').onclick=function(){ $('bi').value=0;$('tri').value=0;$('load').value=0;$('biV').textContent=0;$('triV').textContent=0;bData=[];drawArm();refreshRows(); };
+
+/* ---------- PART C ---------- */
+var cData=[], lastTrace=null, fatigueState=0, running=false;
+function simulate(f,startFat){
+  var dt=0.01, T=8, n=Math.round(T/dt), a=0, fat=startFat, next=0, out=[], per=1/f;
+  for(var i=0;i<n;i++){
+    var tm=i*dt;
+    if(tm>=next){ a=a+(1-a)*0.42; next+=per; }
+    a*=Math.exp(-dt/0.07);               // calcium re-uptake
+    var drive=Math.min(1,a*1.0);
+    fat+= (drive>0.25? 0.0012*drive*(f>20?1.6:1) : -0.0006);
+    fat=Math.max(0,Math.min(0.9,fat));
+    out.push({t:tm,F:drive*(1-fat)*100});
+  }
+  return {pts:out,fat:fat};
+}
+function drawPlot(tr){
+  var s=$('plot'); s.innerHTML=''; var L=44,R=590,Tp=14,B=226;
+  for(var g=0;g<=4;g++){ var y=B-(B-Tp)*g/4; el('line',{x1:L,y1:y,x2:R,y2:y,stroke:'var(--line)'},s); txt(s,L-6,y+4,String(g*25),false).setAttribute('text-anchor','end'); }
+  for(var x=0;x<=8;x++){ var X=L+(R-L)*x/8; el('line',{x1:X,y1:B,x2:X,y2:B+5,stroke:'var(--muted)'},s); txt(s,X,B+20,String(x),true); }
+  txt(s,(L+R)/2,254,t('c_t'),true); var yl=txt(s,12,120,t('c_axis'),true); yl.setAttribute('transform','rotate(-90 12 120)');
+  if(!tr) return;
+  var d=''; tr.pts.forEach(function(p,i){ if(i%2) return; d+=(d?'L':'M')+(L+(R-L)*p.t/8).toFixed(1)+' '+(B-(B-Tp)*p.F/100).toFixed(1); });
+  el('path',{d:d,fill:'none',stroke:'var(--muscle)','stroke-width':2.5,'stroke-linejoin':'round'},s);
+}
+function classify(f,pts){
+  var pk=0,end=pts[pts.length-1].F; pts.forEach(function(p){if(p.F>pk)pk=p.F;});
+  var late=pts.slice(-60), lmax=0; late.forEach(function(p){if(p.F>lmax)lmax=p.F;});
+  var mid=pts.slice(200,260), mmax=0; mid.forEach(function(p){if(p.F>mmax)mmax=p.F;});
+  var pat;
+  if(f<8) pat='p_twitch'; else if(f<18) pat='p_summ'; else pat=(lmax<mmax*0.8||lmax<pk*0.75)?'p_fat':'p_tet';
+  return {pk:Math.round(pk),end:Math.round(lmax),pat:pat};
+}
+$('freq').oninput=function(){$('freqV').textContent=this.value;};
+$('go').onclick=function(){
+  if(running) return; var f=+$('freq').value;
+  var startFat=($('rest').value==='none')?fatigueState:0;
+  var r=simulate(f,startFat); fatigueState=r.fat; lastTrace=r;
+  running=true; $('go').disabled=true; var i=0, tot=r.pts.length;
+  var part={pts:[]}; $('cmsg').className='msg warn'; $('cmsg').textContent='…';
+  var iv=setInterval(function(){
+    i+=16; part={pts:r.pts.slice(0,Math.min(i,tot))}; drawPlot(part);
+    if(i>=tot){ clearInterval(iv); running=false; $('go').disabled=false;
+      var c=classify(f,r.pts); cData.push({f:f,pk:c.pk,end:c.end,pat:c.pat}); refreshRows();
+      $('cmsg').className='msg ok'; $('cmsg').textContent=t('c_done')+': '+t(c.pat); }
+  },30);
+};
+$('cClear').onclick=function(){cData=[];lastTrace=null;fatigueState=0;drawPlot(null);refreshRows();$('cmsg').className='msg warn';$('cmsg').textContent=t('cWait');};
+
+window.__labSetLang=function(l){lang=l;applyLang();};
+window.__lab={exp50:function(){var r=simulate(50,0);return classify(50,r.pts);}};
+/* init */
+$('ca').checked=false;
+applyLang();
+})();
+
+(function(){
+'use strict';
+var lang='en';
+var UI={
+en:{mtAsg:'Assignment (30 pts)',mtLab:'Virtual Lab (practice)',labIntroH:'Virtual Lab: play and explore',labIntro:'Use these models to see how muscles contract. Section G of the assignment asks for numbers from Part A and Part C, so run them before you answer. Practice is not graded.',secG:'G. Virtual lab model',goLab:'Open the Virtual Lab tab',title:'Activity 1.2.1 Causes of Contraction: Lab + Assignment',sub:'PLTW Human Body Systems • Play with the virtual model, then take the 30-point autograded assignment',nameL:'Your name',periodL:'Class period',
+intro:'Answer every question, then press Submit at the bottom. Your numbers in Section C are different from your classmates’. Section G uses the Virtual Lab tab. Each question is worth 1 point.',
+submit:'Submit for grading',retake:'Try again with new numbers',print:'Print / save as PDF',copy:'Copy score report',tH:'Teacher gradebook',tP:'Only you see this. Scores appear here when students submit while signed in with access that lets them save.',tCsv:'Copy as CSV',
+foot:'Simplified models for learning. Real muscles are more complex.',
+answered:'Answered',of:'of',pts:'pts',points:'points',score:'Score',correctIs:'Correct answer',needName:'Please enter your name and class period first.',needAll:'Some questions are unanswered. Submit anyway? Blank answers count as wrong.',
+saved:'Your score was saved for your teacher.',notSaved:'Your score could not be saved for your teacher. Use Copy score report or Print and give it to your teacher.',saving:'Saving…',
+great:'Great work!',keep:'Review the explanations below and try again.',copied:'Copied! Paste it where your teacher asks.',manual:'Select the text and copy it.',
+tName:'Name',tPeriod:'Period',tBest:'Best',tFirst:'First',tLatest:'Latest',tTries:'Attempts',tNone:'No scores saved yet.',tAvg:'Class average (best)',
+secA:'A. Muscle tissue types',secB:'B. Looking at the tissues',secC:'C. Investigating contraction',secD:'D. The sarcomere',secE:'E. Sliding filament theory',secF:'F. Nathan’s cramps, calcium, and homeostasis'},
+es:{mtAsg:'Tarea (30 pts)',mtLab:'Laboratorio virtual (práctica)',labIntroH:'Laboratorio virtual: juega y explora',labIntro:'Usa estos modelos para ver cómo se contraen los músculos. La Sección G de la tarea pide números de la Parte A y la Parte C, así que ejecútalas antes de responder. La práctica no se califica.',secG:'G. Modelo del laboratorio virtual',goLab:'Abrir la pestaña Laboratorio virtual',title:'Actividad 1.2.1 Causas de la contracción: Laboratorio + Tarea',sub:'PLTW Sistemas del Cuerpo Humano • Juega con el modelo virtual y luego haz la tarea de 30 puntos calificada automáticamente',nameL:'Tu nombre',periodL:'Período de clase',
+intro:'Responde todas las preguntas y luego presiona Enviar al final. Tus números en la Sección C son diferentes de los de tus compañeros. La Sección G usa la pestaña Laboratorio virtual. Cada pregunta vale 1 punto.',
+submit:'Enviar para calificar',retake:'Intentar de nuevo con números nuevos',print:'Imprimir / guardar como PDF',copy:'Copiar reporte de puntaje',tH:'Libro de calificaciones del maestro',tP:'Solo tú ves esto. Los puntajes aparecen aquí cuando los estudiantes envían con una sesión que les permite guardar.',tCsv:'Copiar como CSV',
+foot:'Modelos simplificados para aprender. Los músculos reales son más complejos.',
+answered:'Respondidas',of:'de',pts:'pts',points:'puntos',score:'Puntaje',correctIs:'Respuesta correcta',needName:'Primero escribe tu nombre y período de clase.',needAll:'Hay preguntas sin responder. ¿Enviar de todos modos? Las respuestas en blanco cuentan como incorrectas.',
+saved:'Tu puntaje se guardó para tu maestro.',notSaved:'No se pudo guardar tu puntaje para tu maestro. Usa Copiar reporte o Imprimir y entrégaselo a tu maestro.',saving:'Guardando…',
+great:'¡Excelente trabajo!',keep:'Revisa las explicaciones de abajo e intenta de nuevo.',copied:'¡Copiado! Pégalo donde tu maestro lo pida.',manual:'Selecciona el texto y cópialo.',
+tName:'Nombre',tPeriod:'Período',tBest:'Mejor',tFirst:'Primero',tLatest:'Último',tTries:'Intentos',tNone:'Aún no hay puntajes guardados.',tAvg:'Promedio de la clase (mejor)',
+secA:'A. Tipos de tejido muscular',secB:'B. Observando los tejidos',secC:'C. Investigando la contracción',secD:'D. El sarcómero',secE:'E. Teoría del filamento deslizante',secF:'F. Los calambres de Nathan, el calcio y la homeostasis'}
+};
+function u(k){return UI[lang][k]!==undefined?UI[lang][k]:UI.en[k];}
+function L(o){return (o&&typeof o==='object'&&'en' in o)?o[lang]:o;}
+function T(en,es){return {en:en,es:es};}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ---------- random ---------- */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var rng, S;
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function rnd(a,b){return a+rng()*(b-a);}
+
+/* ---------- content ---------- */
+var YN=[{v:'',t:T('Choose…','Elige…')},{v:'y',t:T('Yes','Sí')},{v:'n',t:T('No','No')}];
+var SOL=[
+ {k:'atpWater',n:T('ATP in distilled water','ATP en agua destilada'),pct:[0,6]},
+ {k:'atpSalt',n:T('ATP in salt solution','ATP en solución salina'),pct:[35,50]},
+ {k:'salt',n:T('Salt solution with no ATP','Solución salina sin ATP'),pct:[0,4]}
+];
+var VOC=[
+ {k:'z',term:T('Z disc','Disco Z'),def:T('Marks the boundary of a sarcomere and anchors the thin filaments','Marca el límite de un sarcómero y ancla los filamentos delgados')},
+ {k:'actin',term:T('Actin','Actina'),def:T('Thin filament that myosin heads attach to and pull','Filamento delgado al que se unen las cabezas de miosina y que jalan')},
+ {k:'myosin',term:T('Myosin','Miosina'),def:T('Thick filament with heads that form cross-bridges','Filamento grueso con cabezas que forman puentes cruzados')},
+ {k:'tn',term:T('Troponin','Troponina'),def:T('Protein that binds Ca²⁺ and shifts tropomyosin out of the way','Proteína que une Ca²⁺ y mueve la tropomiosina para despejar el camino')},
+ {k:'tm',term:T('Tropomyosin','Tropomiosina'),def:T('Protein strand that covers the binding sites on actin when the muscle is relaxed','Cadena de proteína que cubre los sitios de unión de la actina cuando el músculo está relajado')}
+];
+var VOC3=VOC.slice(0,3);
+var EVT=[
+ {k:1,t:T('The muscle is relaxed and tropomyosin covers the binding sites on actin.','El músculo está relajado y la tropomiosina cubre los sitios de unión de la actina.')},
+ {k:2,t:T('After a nerve signal, Ca²⁺ is released from the sarcoplasmic reticulum and binds troponin, so tropomyosin moves and exposes the binding sites.','Después de una señal nerviosa, se libera Ca²⁺ del retículo sarcoplásmico y se une a la troponina, por lo que la tropomiosina se mueve y expone los sitios de unión.')},
+ {k:3,t:T('A myosin head attaches to actin, forming a cross-bridge.','Una cabeza de miosina se une a la actina y forma un puente cruzado.')},
+ {k:4,t:T('Power stroke: the myosin head pulls actin toward the center of the sarcomere.','Golpe de poder: la cabeza de miosina jala la actina hacia el centro del sarcómero.')},
+ {k:5,t:T('ATP binds the myosin head so it detaches from actin.','El ATP se une a la cabeza de miosina para que se suelte de la actina.')},
+ {k:6,t:T('The nerve signal stops, Ca²⁺ is pumped back into the sarcoplasmic reticulum, and the filaments slide back as the muscle relaxes.','La señal nerviosa se detiene, el Ca²⁺ regresa al retículo sarcoplásmico y los filamentos se deslizan de regreso mientras el músculo se relaja.')}
+];
+// multiple choice bank: correct option listed first
+var MC={
+ sm:{q:T('Under the microscope you see spindle-shaped cells with one nucleus and no striations. Which tissue is this?','Bajo el microscopio ves células en forma de huso con un núcleo y sin estriaciones. ¿Qué tejido es?'),
+  o:[T('Smooth muscle','Músculo liso'),T('Skeletal muscle','Músculo esquelético'),T('Cardiac muscle','Músculo cardíaco'),T('Nervous tissue','Tejido nervioso')],
+  e:T('Smooth muscle cells are spindle-shaped and not striated.','Las células del músculo liso tienen forma de huso y no son estriadas.')},
+ ca:{q:T('Which tissue has striations and branching cells joined by intercalated discs?','¿Qué tejido tiene estriaciones y células ramificadas unidas por discos intercalados?'),
+  o:[T('Cardiac muscle','Músculo cardíaco'),T('Smooth muscle','Músculo liso'),T('Skeletal muscle','Músculo esquelético'),T('Epithelial tissue','Tejido epitelial')],
+  e:T('Cardiac muscle cells branch and connect at intercalated discs.','Las células del músculo cardíaco se ramifican y se conectan en discos intercalados.')},
+ big:{q:T('Which solution produced the greatest percent contraction in your data?','¿Qué solución produjo el mayor porcentaje de contracción en tus datos?'),
+  o:[T('ATP in salt solution','ATP en solución salina'),T('ATP in distilled water','ATP en agua destilada'),T('Salt solution with no ATP','Solución salina sin ATP'),T('They were all the same','Todas fueron iguales')],
+  e:T('ATP plus the ions in salt solution gave the greatest contraction.','El ATP junto con los iones de la solución salina dio la mayor contracción.')},
+ req:{q:T('Which conclusion is best supported by your data?','¿Qué conclusión está mejor respaldada por tus datos?'),
+  o:[T('Contraction needs both ATP and the ions found in salt solution.','La contracción necesita tanto ATP como los iones de la solución salina.'),T('ATP alone in distilled water is enough for strong contraction.','El ATP solo en agua destilada basta para una contracción fuerte.'),T('Salt solution alone is enough for strong contraction.','La solución salina sola basta para una contracción fuerte.'),T('Neither ATP nor salt matters.','Ni el ATP ni la sal importan.')],
+  e:T('Only the fibers with both ATP and salt contracted strongly.','Solo las fibras con ATP y sal se contrajeron con fuerza.')},
+ nglu:{q:T('Nathan exercised in the morning on an empty stomach. His blood test showed glucose of 56 mg/dL (normal 65–115), magnesium of 1.6 mg/dL (low) and sodium of 135 mEq/L (low). Why does the low glucose matter for his muscles?','Nathan hizo ejercicio en la mañana con el estómago vacío. Su análisis de sangre mostró glucosa de 56 mg/dL (normal 65–115), magnesio de 1.6 mg/dL (bajo) y sodio de 135 mEq/L (bajo). ¿Por qué importa la glucosa baja para sus músculos?'),
+  o:[T('Glucose is used with oxygen to make ATP, so less glucose means less ATP for contraction.','La glucosa se usa con oxígeno para producir ATP, así que menos glucosa significa menos ATP para la contracción.'),T('Glucose is the ion that uncovers the binding sites on actin.','La glucosa es el ion que descubre los sitios de unión de la actina.'),T('Glucose makes the Z discs thicker.','La glucosa hace más gruesos los discos Z.'),T('Glucose is not related to muscle contraction.','La glucosa no está relacionada con la contracción muscular.')],
+  e:T('Glucose and oxygen react in cells to make ATP, the energy molecule muscles need.','La glucosa y el oxígeno reaccionan en las células para producir ATP, la molécula de energía que necesitan los músculos.')},
+ ncr:{q:T('Which statement best explains how running low on ATP could cause a muscle cramp?','¿Qué enunciado explica mejor cómo la falta de ATP podría causar un calambre muscular?'),
+  o:[T('Myosin heads cannot detach from actin, so the muscle stays contracted.','Las cabezas de miosina no pueden soltarse de la actina, así que el músculo se queda contraído.'),T('Actin filaments dissolve so the muscle cannot contract.','Los filamentos de actina se disuelven y el músculo no puede contraerse.'),T('Tropomyosin permanently covers the binding sites so the muscle stays relaxed.','La tropomiosina cubre permanentemente los sitios de unión y el músculo se queda relajado.'),T('Too much calcium is pumped into the sarcoplasmic reticulum.','Se bombea demasiado calcio al retículo sarcoplásmico.')],
+  e:T('Without a new ATP, the myosin head stays attached to actin (the same reason rigor mortis happens), so the muscle cannot relax.','Sin un ATP nuevo, la cabeza de miosina se queda unida a la actina (la misma razón del rigor mortis), así que el músculo no puede relajarse.')},
+ shv:{q:T('Shivering is skeletal muscle contracting without your control. How does it help homeostasis?','El escalofrío es músculo esquelético que se contrae sin tu control. ¿Cómo ayuda a la homeostasis?'),
+  o:[T('The contractions release heat that helps keep body temperature stable.','Las contracciones liberan calor que ayuda a mantener estable la temperatura corporal.'),T('It lowers blood pressure.','Baja la presión arterial.'),T('It stores extra calcium.','Almacena calcio extra.'),T('It makes new muscle cells.','Produce células musculares nuevas.')],
+  e:T('Muscle contraction uses ATP and gives off heat, which warms the body.','La contracción muscular usa ATP y desprende calor, que calienta el cuerpo.')},
+ cal:{q:T('What is the role of calcium (Ca²⁺) in muscle contraction?','¿Cuál es la función del calcio (Ca²⁺) en la contracción muscular?'),
+  o:[T('It binds troponin, which moves tropomyosin off the binding sites on actin.','Se une a la troponina, que mueve la tropomiosina fuera de los sitios de unión de la actina.'),T('It is the energy source for myosin.','Es la fuente de energía de la miosina.'),T('It makes the Z discs thicker.','Hace más gruesos los discos Z.'),T('It carries oxygen to the fiber.','Lleva oxígeno a la fibra.')],
+  e:T('Ca²⁺ uncovers the binding sites so cross-bridges can form.','El Ca²⁺ descubre los sitios de unión para que se formen puentes cruzados.')},
+ lab2:{q:T('Virtual Lab, Part A: Let the sarcomere contract, then drag ATP to 0% and turn calcium OFF. What happens to the sarcomere?','Laboratorio virtual, Parte A: Deja que el sarcómero se contraiga, luego baja el ATP a 0% y DESACTIVA el calcio. ¿Qué le pasa al sarcómero?'),
+  o:[T('It stays stuck contracted because myosin heads cannot detach without ATP.','Se queda atascado contraído porque las cabezas de miosina no pueden soltarse sin ATP.'),T('It relaxes completely.','Se relaja por completo.'),T('It becomes longer than normal.','Se hace más largo de lo normal.'),T('The actin filaments disappear.','Los filamentos de actina desaparecen.')],
+  e:T('Without ATP the myosin heads cannot release actin, so the sarcomere stays contracted (like a cramp or rigor).','Sin ATP las cabezas de miosina no pueden soltar la actina, así que el sarcómero se queda contraído (como un calambre o rigor).')}
+};
+
+/* ---------- attempt state ---------- */
+function newAttempt(){
+  var seed=Math.floor(Math.random()*2147483647); rng=mulberry(seed);
+  S={seed:seed,ans:{},submitted:false,res:null,fib:[],mcOrd:{},voc:null,evt:null};
+  SOL.forEach(function(s){ var o=Math.round(rnd(18,26))/10; var p=rnd(s.pct[0],s.pct[1]); var f=Math.round(o*(1-p/100)*10)/10; if(f>o) f=o; S.fib.push({k:s.k,o:o,f:f,pct:(o-f)/o*100}); });
+  Object.keys(MC).forEach(function(k){ var n=MC[k].o.length, idx=[]; for(var i=0;i<n;i++)idx.push(i); S.mcOrd[k]=MC[k].fixed?idx:shuffle(idx); });
+  S.voc=shuffle(VOC3.map(function(v){return v.k;})); S.evt=shuffle(EVT.map(function(e){return e.k;}));
+}
+
+/* ---------- units ---------- */
+// sub: {key, type:'radio'|'select'|'num', correct, tol, ctext}
+var UNITS=[];
+function buildUnits(){
+  UNITS=[];
+  var sec=function(id,title){UNITS.push({sec:id,title:title});};
+  sec('secA');
+  UNITS.push({id:'tissue',pts:6,render:rTissue,subs:[
+    {key:'sk_s',correct:'y'},{key:'sk_v',correct:'y'},{key:'ca_s',correct:'y'},{key:'ca_v',correct:'n'},{key:'sm_s',correct:'n'},{key:'sm_v',correct:'n'}].map(function(s){s.type='select';s.ctext=function(){return s.correct==='y'?L(YN[1].t):L(YN[2].t);};return s;})});
+  sec('secB'); UNITS.push(mcUnit('sm')); UNITS.push(mcUnit('ca'));
+  sec('secC'); UNITS.push({id:'data',pts:3,render:rData,subs:S.fib.map(function(f){return {key:'pct_'+f.k,type:'num',correct:f.pct,tol:1,ctext:function(){return f.pct.toFixed(1)+'%';}};})});
+  UNITS.push(mcUnit('big')); UNITS.push(mcUnit('req'));
+  sec('secD'); UNITS.push({id:'voc',pts:3,render:rVoc,subs:VOC3.map(function(v){return {key:'voc_'+v.k,type:'select',correct:v.k,ctext:function(){return L(v.def);}};})});
+  sec('secE'); UNITS.push({id:'ord',pts:6,render:rOrd,subs:EVT.map(function(e){return {key:'ord_'+e.k,type:'select',correct:String(e.k),ctext:function(){return String(e.k);}};})});
+  sec('secF'); UNITS.push(mcUnit('nglu')); UNITS.push(mcUnit('ncr')); UNITS.push(mcUnit('shv')); UNITS.push(mcUnit('cal'));
+  sec('secG'); UNITS.push({id:'lab1',pts:1,render:rLab,labKey:'lab1',subs:[{key:'lab1',type:'num',correct:1.6,tol:0.05,ctext:function(){return '1.60 µm';}}]});
+  UNITS.push(mcUnit('lab2'));
+  UNITS.push({id:'lab3',pts:1,render:rLab,labKey:'lab3',subs:[{key:'lab3',type:'num',tol:3,get correct(){return window.__lab?window.__lab.exp50().pk:0;},ctext:function(){return (window.__lab?window.__lab.exp50().pk:0)+'%';}}]});
+  UNITS.push({id:'lab4',pts:1,render:rLab,labKey:'lab4',subs:[{key:'lab4',type:'num',tol:3,get correct(){return window.__lab?window.__lab.exp50().end:0;},ctext:function(){return (window.__lab?window.__lab.exp50().end:0)+'%';}}]});
+}
+function mcUnit(k){
+  var m=MC[k];
+  return {id:'mc_'+k,pts:1,mc:k,render:rMc,subs:[{key:'mc_'+k,type:'radio',correct:'0',ctext:function(){return L(m.o[0]);}}],explain:m.e};
+}
+
+/* ---------- rendering ---------- */
+var qn=0;
+function fb(key){return '<span class="fb" data-fb="'+key+'"></span>';}
+function optSel(key,opts,val){
+  var h='<select data-key="'+key+'" aria-label="'+esc(key)+'">';
+  opts.forEach(function(o){h+='<option value="'+esc(o.v)+'"'+(String(val||'')===String(o.v)?' selected':'')+'>'+esc(L(o.t))+'</option>';});
+  return h+'</select>';
+}
+function rTissue(un){
+  var rows=[['sk',T('Skeletal','Esquelético')],['ca',T('Cardiac','Cardíaco')],['sm',T('Smooth','Liso')]];
+  var h='<p><b>'+(++qn)+'–'+(qn+5)+'.</b> '+esc(L(T('Complete the comparison table for the three types of muscle tissue. (6 pts)','Completa la tabla comparativa de los tres tipos de tejido muscular. (6 pts)')))+'</p><table><thead><tr><th>'+esc(L(T('Tissue','Tejido')))+'</th><th>'+esc(L(T('Striated?','¿Estriado?')))+'</th><th>'+esc(L(T('Voluntary?','¿Voluntario?')))+'</th></tr></thead><tbody>';
+  rows.forEach(function(r){ h+='<tr><td><b>'+esc(L(r[1]))+'</b></td><td>'+optSel(r[0]+'_s',YN,S.ans[r[0]+'_s'])+fb(r[0]+'_s')+'</td><td>'+optSel(r[0]+'_v',YN,S.ans[r[0]+'_v'])+fb(r[0]+'_v')+'</td></tr>'; });
+  qn+=5; return h+'</tbody></table>';
+}
+function rMc(un){
+  var m=MC[un.mc], ord=S.mcOrd[un.mc], key='mc_'+un.mc, h='<fieldset><legend><b>'+(++qn)+'.</b> '+esc(L(m.q))+'</legend>';
+  ord.forEach(function(oi,pos){ var id=key+'_'+pos; h+='<div class="opt"><input type="radio" name="'+key+'" id="'+id+'" value="'+oi+'"'+(String(S.ans[key])===String(oi)?' checked':'')+'><label for="'+id+'">'+esc(L(m.o[oi]))+'</label></div>'; });
+  return h+fb(key)+'</fieldset>';
+}
+var LABQ={
+ lab1:T('Virtual Lab, Part A: Turn calcium ON with ATP at 100% and wait until the sarcomere is fully contracted. What is the sarcomere length in µm?','Laboratorio virtual, Parte A: Activa el calcio con ATP al 100% y espera a que el sarcómero esté totalmente contraído. ¿Cuál es la longitud del sarcómero en µm?'),
+ lab3:T('Virtual Lab, Part C: Set the frequency to 50 Hz with “Fully rested,” press Stimulate, and read the table. What is the peak force (%)?','Laboratorio virtual, Parte C: Pon la frecuencia en 50 Hz con “Completamente descansado”, presiona Estimular y lee la tabla. ¿Cuál es la fuerza máxima (%)?'),
+ lab4:T('Virtual Lab, Part C: For that same 50 Hz run, what is the “Force at 8 s” (%) in the table?','Laboratorio virtual, Parte C: En esa misma prueba de 50 Hz, ¿cuál es la “Fuerza a los 8 s” (%) en la tabla?')
+};
+function rLab(un){
+  var key=un.subs[0].key;
+  var h='<fieldset><legend><b>'+(++qn)+'.</b> '+esc(L(LABQ[un.labKey]))+'</legend><input type="number" step="any" inputmode="decimal" data-key="'+key+'" value="'+(S.ans[key]===undefined?'':esc(S.ans[key]))+'" aria-label="'+esc(key)+'" style="max-width:140px">'+fb(key)+'</fieldset>';
+  if(un.labKey==='lab1') h+='<button type="button" class="btn alt golab noprint" data-golab="1">'+esc(u('goLab'))+'</button>';
+  return h;
+}
+function rData(un){
+  var h='<p><b>'+(++qn)+'–'+(qn+2)+'.</b> '+esc(L(T('Muscle fibers were measured before and after treatment. Calculate the percent contraction for each fiber. Round to the nearest whole number or one decimal. (3 pts)','Se midieron fibras musculares antes y después del tratamiento. Calcula el porcentaje de contracción de cada fibra. Redondea al número entero o a un decimal. (3 pts)')))+'</p>';
+  h+='<div class="note"><b>'+esc(L(T('Formula','Fórmula')))+':</b> (original − final) ÷ original × 100</div>';
+  h+='<table><thead><tr><th>'+esc(L(T('Solution','Solución')))+'</th><th>'+esc(L(T('Original (cm)','Original (cm)')))+'</th><th>'+esc(L(T('Final (cm)','Final (cm)')))+'</th><th>'+esc(L(T('% contraction','% de contracción')))+'</th></tr></thead><tbody>';
+  S.fib.forEach(function(f,i){ var key='pct_'+f.k; h+='<tr><td><b>'+esc(L(SOL[i].n))+'</b></td><td>'+f.o.toFixed(1)+'</td><td>'+f.f.toFixed(1)+'</td><td><input type="number" step="any" inputmode="decimal" data-key="'+key+'" value="'+(S.ans[key]===undefined?'':esc(S.ans[key]))+'" aria-label="% '+esc(L(SOL[i].n))+'" style="max-width:130px">'+fb(key)+'</td></tr>'; });
+  qn+=2; return h+'</tbody></table>';
+}
+function rVoc(un){
+  var h='<p><b>'+(++qn)+'–'+(qn+2)+'.</b> '+esc(L(T('Match each sarcomere term to its description. (3 pts)','Relaciona cada término del sarcómero con su descripción. (3 pts)')))+'</p>';
+  var opts=[{v:'',t:T('Choose…','Elige…')}].concat(S.voc.map(function(k){var v=VOC.filter(function(x){return x.k===k;})[0];return {v:k,t:v.def};}));
+  VOC3.forEach(function(v){ var key='voc_'+v.k; h+='<div class="subrow"><div><b>'+esc(L(v.term))+'</b></div><div>'+optSel(key,opts,S.ans[key])+fb(key)+'</div></div>'; });
+  qn+=2; return h;
+}
+function rOrd(un){
+  var h='<p><b>'+(++qn)+'–'+(qn+5)+'.</b> '+esc(L(T('Put the six stages of the sliding filament theory in order. Pick the step number (1 = first) for each event. Use each number once. (6 pts)','Ordena las seis etapas de la teoría del filamento deslizante. Elige el número de paso (1 = primero) para cada evento. Usa cada número una vez. (6 pts)')))+'</p>';
+  var opts=[{v:'',t:T('Step…','Paso…')}]; for(var i=1;i<=6;i++)opts.push({v:String(i),t:{en:String(i),es:String(i)}});
+  S.evt.forEach(function(k){ var e=EVT.filter(function(x){return x.k===k;})[0], key='ord_'+k; h+='<div class="subrow"><div>'+esc(L(e.t))+'</div><div>'+optSel(key,opts,S.ans[key])+fb(key)+'</div></div>'; });
+  qn+=5; return h;
+}
+function render(){
+  document.documentElement.lang=lang; document.title=u('title');
+  [].forEach.call(document.querySelectorAll('[data-i18n]'),function(e){e.textContent=u(e.getAttribute('data-i18n'));});
+  $('bEn').setAttribute('aria-pressed',lang==='en'); $('bEs').setAttribute('aria-pressed',lang==='es');
+  qn=0; var h='';
+  UNITS.forEach(function(un){
+    if(un.sec){ h+='<section class="card"><h2>'+esc(u(un.sec))+'</h2>'; }
+    else { h+='<div class="q" data-unit="'+un.id+'">'+un.render(un)+'</div>'; }
+    // close card before next sec or at end
+    var nxt=UNITS[UNITS.indexOf(un)+1];
+    if(!un.sec && (!nxt||nxt.sec)) h+='</section>';
+  });
+  $('form').innerHTML=h; bind(); if(S.submitted) showMarks(); updateProg();
+  $('submit').style.display=S.submitted?'none':''; $('retake').style.display=$('print').style.display=$('copy').style.display=S.submitted?'':'none';
+  if(S.submitted) bannerUpdate();
+}
+function bind(){
+  [].forEach.call($('form').querySelectorAll('[data-golab]'),function(b){ b.onclick=function(){showView('Lab');window.scrollTo(0,0);}; });
+  [].forEach.call($('form').querySelectorAll('input[type=radio]'),function(r){ r.onchange=function(){S.ans[r.name]=r.value;updateProg();}; r.disabled=S.submitted; });
+  [].forEach.call($('form').querySelectorAll('select'),function(s){ s.onchange=function(){S.ans[s.getAttribute('data-key')]=s.value;updateProg();}; s.disabled=S.submitted; });
+  [].forEach.call($('form').querySelectorAll('input[type=number]'),function(s){ s.oninput=function(){S.ans[s.getAttribute('data-key')]=s.value;updateProg();}; s.disabled=S.submitted; });
+}
+function allSubs(){var a=[];UNITS.forEach(function(un){if(un.subs)un.subs.forEach(function(s){a.push(s);});});return a;}
+function updateProg(){
+  var subs=allSubs(), n=0; subs.forEach(function(s){var v=S.ans[s.key]; if(v!==undefined&&v!=='')n++;});
+  $('prog').textContent=u('answered')+': '+n+' '+u('of')+' '+subs.length;
+  $('scoreTop').textContent=S.submitted&&S.res?(u('score')+': '+S.res.total+'/30'):'30 '+u('points');
+}
+
+/* ---------- grading ---------- */
+function gradeSub(s){
+  var v=S.ans[s.key]; if(v===undefined||v==='')return false;
+  if(s.type==='num'){ var x=parseFloat(String(v).replace(',','.')); return isFinite(x)&&Math.abs(x-s.correct)<=s.tol; }
+  return String(v)===String(s.correct);
+}
+function grade(){
+  var total=0, per={};
+  UNITS.forEach(function(un){ if(!un.subs)return; var e=0; un.subs.forEach(function(s){ s.ok=gradeSub(s); if(s.ok){e++;total++;} }); per[un.id]=e; });
+  S.res={total:total,per:per}; S.submitted=true;
+}
+function showMarks(){
+  UNITS.forEach(function(un){ if(!un.subs)return;
+    var allok=true;
+    un.subs.forEach(function(s){ if(s.ok===undefined)s.ok=gradeSub(s); var el=document.querySelector('[data-fb="'+s.key+'"]'); if(!el)return;
+      el.className='fb '+(s.ok?'ok':'bad');
+      el.textContent=s.ok?'✓ 1 '+u('pts'):'✗ '+u('correctIs')+': '+s.ctext();
+      if(!s.ok)allok=false; });
+    var box=document.querySelector('[data-unit="'+un.id+'"]'); if(box){ box.className='q '+(allok?'ok-q':'bad-q'); if(un.explain&&!box.querySelector('.ex')){ var d=document.createElement('div'); d.className='note ex'; d.textContent=L(un.explain); box.appendChild(d);} }
+  });
+}
+function bannerUpdate(){
+  var old=document.getElementById('banner'); if(old)old.remove();
+  var b=document.createElement('div'); b.id='banner'; var t=S.res.total; b.className='banner '+(t>=24?'ok':'mid');
+  b.textContent=u('score')+': '+t+' / 30  —  '+(t>=24?u('great'):u('keep'));
+  $('form').insertBefore(b,$('form').firstChild);
+}
+function summaryText(){
+  var out=[u('score')+': '+S.res.total+'/30', u('tName')+': '+$('nm').value+'   '+u('tPeriod')+': '+$('pd').value, ''];
+  UNITS.forEach(function(un){ if(un.sec){out.push('== '+u(un.sec)+' ==');} else if(un.subs){ out.push(un.id+': '+S.res.per[un.id]+'/'+un.pts); } });
+  return out.join('\n');
+}
+
+/* ---------- saving + teacher ---------- */
+var db=null, uid=null, ownerView=false;
+async function initCaps(){
+  try{
+    if(typeof claude==='undefined'||!claude.use)return;
+    db=await claude.use('db');
+    var user=await claude.use('user');
+    if(user){ try{uid=await user.id();}catch(e){} try{ownerView=await user.isOwner()||await user.canEdit();}catch(e){} }
+    if(ownerView&&db){ $('teacher').style.display=''; watchResults(); }
+  }catch(e){ db=null; }
+}
+async function saveResult(){
+  var st=$('status'); st.style.display='block'; st.textContent=u('saving');
+  if(!db||!uid){ st.textContent=u('notSaved'); return; }
+  try{
+    var ref=db.doc('results/'+uid), prior=null;
+    try{ var snap=await ref.get(); if(snap.exists)prior=snap.data(); }catch(e){}
+    var sc=S.res.total;
+    await ref.set({uid:uid,name:$('nm').value.trim(),period:$('pd').value.trim(),first:prior&&typeof prior.first==='number'?prior.first:sc,best:Math.max(sc,prior&&typeof prior.best==='number'?prior.best:0),latest:sc,tries:(prior&&prior.tries||0)+1,ts:Date.now(),lang:lang});
+    st.textContent=u('saved');
+  }catch(e){ st.textContent=u('notSaved'); }
+}
+var lastRows=[];
+function watchResults(){
+  db.collection('results').limit(1000).onSnapshot(function(snap){
+    lastRows=snap.docs.map(function(d){var r=d.data();return {name:r.name||'',period:r.period||'',tries:r.tries||1,first:r.first,latest:r.latest,best:r.best};});
+    lastRows.sort(function(a,b){return (a.period+a.name).localeCompare(b.period+b.name);});
+    drawTeacher();
+  },function(){});
+}
+function drawTeacher(){
+  if(!lastRows.length){ $('tTable').innerHTML='<p>'+esc(u('tNone'))+'</p>'; return; }
+  var h='<table><thead><tr><th>'+esc(u('tName'))+'</th><th>'+esc(u('tPeriod'))+'</th><th>'+esc(u('tFirst'))+'</th><th>'+esc(u('tLatest'))+'</th><th>'+esc(u('tBest'))+'</th><th>'+esc(u('tTries'))+'</th></tr></thead><tbody>';
+  var sum=0; lastRows.forEach(function(r){sum+=r.best; h+='<tr><td>'+esc(r.name)+'</td><td>'+esc(r.period)+'</td><td>'+r.first+'</td><td>'+r.latest+'</td><td><b>'+r.best+'</b></td><td>'+r.tries+'</td></tr>';});
+  h+='</tbody></table><p><b>'+esc(u('tAvg'))+':</b> '+(sum/lastRows.length).toFixed(1)+' / 30</p>';
+  $('tTable').innerHTML=h;
+}
+$('tCsv').onclick=function(){
+  var csv=['name,period,first,latest,best,attempts'].concat(lastRows.map(function(r){return [r.name,r.period,r.first,r.latest,r.best,r.tries].map(function(x){return '"'+String(x).replace(/"/g,'""')+'"';}).join(',');})).join('\n');
+  var ta=$('tOut'); ta.value=csv; ta.style.display='block'; ta.select();
+  try{navigator.clipboard.writeText(csv);}catch(e){}
+};
+
+/* ---------- events ---------- */
+function showView(k){ ['Asg','Lab'].forEach(function(j){ $('mt'+j).setAttribute('aria-selected',j===k); $('view'+j).hidden=(j!==k); }); }
+$('mtAsg').onclick=function(){showView('Asg');}; $('mtLab').onclick=function(){showView('Lab');};
+$('bEn').onclick=function(){lang='en';if(window.__labSetLang)window.__labSetLang('en');render();if(db&&ownerView)drawTeacher();}; $('bEs').onclick=function(){lang='es';if(window.__labSetLang)window.__labSetLang('es');render();if(db&&ownerView)drawTeacher();};
+$('submit').onclick=function(){
+  if(!$('nm').value.trim()||!$('pd').value.trim()){ alert(u('needName')); $('nm').focus(); return; }
+  var subs=allSubs(), blanks=0; subs.forEach(function(s){var v=S.ans[s.key]; if(v===undefined||v==='')blanks++;});
+  if(blanks&&!confirm(u('needAll')))return;
+  grade(); render(); window.scrollTo(0,0); saveResult();
+};
+$('retake').onclick=function(){ newAttempt(); buildUnits(); $('status').style.display='none'; $('report').style.display='none'; render(); window.scrollTo(0,0); };
+$('print').onclick=function(){ try{window.print();}catch(e){} };
+$('copy').onclick=function(){
+  var t=summaryText(), ta=$('report'); ta.value=t; ta.style.display='block';
+  function manual(){ $('status').style.display='block'; $('status').textContent=u('manual'); ta.focus(); ta.select(); }
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){$('status').style.display='block';$('status').textContent=u('copied');},manual);} else manual(); }catch(e){manual();}
+};
+
+newAttempt(); buildUnits(); render(); initCaps();
+})();
+</script>
+</body>
+</html>
